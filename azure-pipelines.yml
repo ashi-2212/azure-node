@@ -17,13 +17,11 @@ steps:
     archiveFile: '$(System.DefaultWorkingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
-- task: AzureWebApp@1
+- task: PublishBuildArtifacts@1
   inputs:
-    azureSubscription: 'app-service-connection'
-    appType: 'webApp'
-    appName: 'node-as'
-    package: '$(System.DefaultWorkingDirectory)/*.zip'
-    deploymentMethod: 'auto'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/$(Build.BuildId).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
 - task: DownloadBuildArtifacts@1
   inputs:
@@ -32,3 +30,11 @@ steps:
     artifactName: '/*.zip'
     itemPattern: 
     downloadPath: '$(System.DefaultWorkingDirectory)'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'app-service-connection'
+    appType: 'webApp'
+    appName: 'node-as'
+    package: '$(System.DefaultWorkingDirectory)/*.zip'
+    deploymentMethod: 'auto'

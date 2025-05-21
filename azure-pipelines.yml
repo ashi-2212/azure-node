@@ -24,3 +24,11 @@ steps:
     appName: 'node-as'
     package: '$(System.DefaultWorkingDirectory)/*.zip'
     deploymentMethod: 'auto'
+
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: '/*.zip'
+    itemPattern: 
+    downloadPath: '$(System.DefaultWorkingDirectory)'
